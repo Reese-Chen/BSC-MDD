@@ -1,54 +1,94 @@
-function BSC = computeBSC(FCvec,age,UseEmpiricalRegCoef,diag,networkname)% only use the networkname when computing split BSC
+function BSC = computeBSC(FCvec, age, UseEmpiricalRegCoef, diag, networkname)
+% computeBSC computes the Brain Sex Continuum (BSC) score
+% from functional connectivity (FC) data with optional age regression.
+%
+% INPUTS:
+%   FCvec               - Functional connectivity matrix in vectorized form 
+%                         (subjects × number of unique FCs).
+%   age                 - Age of each subject (vector).
+%   UseEmpiricalRegCoef - Flag: 0 = estimate regression parameters from data,
+%                         1 = use empirical regression coefficients.
+%   diag                - Diagnosis labels for subjects (used to select HC for regression).
+%   networkname         - Network name used when computing split BSC.
+%
+% OUTPUT:
+%   BSC                 - Brain Signal Complexity score for each subject.
+%
+% NOTES:
+%   - Supports only AAL2 (94 ROIs) and Power264 (264 ROIs).
+%   - Uses pre-trained SVM coefficients (aal2_SVMcoef.mat, power264_SVMcoef.mat).
+%   - Can regress out age effects either empirically (UKB/HCP) or via data-driven GLM.
 
-% basic information
-[n_subject,~] = size(FCvec);
-n_ROI = 94;
+%% Basic information
+[n_subject, ~] = size(FCvec);  % number of subjects and FC features
+n_ROI = 94;                    % number of ROIs (fixed to 94 for this implementation)
 
-% loading regressing and SVM coefficients
-if n_subject<=10 && UseEmpiricalRegCoef == 0
-    error('Too few subjects, inappropriate for regression.\n')
+%% Load regression and SVM coefficients
+if n_subject <= 10 && UseEmpiricalRegCoef == 0
+    error('Too few subjects for reliable data-driven regression.');
 end
+
 if n_ROI == 94
-    load('aal2_SVMcoef.mat')
+    load('aal2_SVMcoef.mat')   % load pre-trained SVM coefficients for AAL2 atlas
     if UseEmpiricalRegCoef == 1
-        load('aal2_regcoef.mat')
+        load('aal2_regcoef.mat')  % load empirical regression coefficients for AAL2
     end
-else if n_ROI == 264
-        load('power264_SVMcoef.mat')
-        if UseEmpiricalRegCoef == 1
-            load('power264_regcoef.mat')
-        end
+elseif n_ROI == 264
+    load('power264_SVMcoef.mat') % load pre-trained SVM coefficients for Power264 atlas
+    if UseEmpiricalRegCoef == 1
+        load('power264_regcoef.mat') % load empirical regression coefficients for Power264
+    end
 else
-    error('Current version only support compute BSC based on AAL2 and Power264.\n')
-end
+    error('Only AAL2 (94 ROIs) and Power264 (264 ROIs) are currently supported.');
 end
 
-% load network names for each FC
-load("network_indexes_for_each_FC.mat");
+%% Load network assignment for each FC
+load("network_indexes_for_each_FC.mat"); 
+% Network_index variable assigns each FC to a functional network
 
-% regressing out age terms
-if size(age,2)~=1
+%% Age regression step
+% Ensure age is a column vector
+if size(age,2) ~= 1
     age = age';
 end
-age_term = [age,age.^2,age.^3];
-if UseEmpiricalRegCoef == 0
-    fprintf("Using data-driven parameters...\n")
-    selectedRows = strcmp(diag, 'HC');
-    %selectedRows = diag==0;
-    for i_ROI = 1:(n_ROI*(n_ROI-1)/2)
-        glmstruct = fitglm(age_term(selectedRows,:),FCvec(selectedRows,i_ROI));
-        b = glmstruct.Coefficients.Estimate;
-        FC_regressed(:,i_ROI) = FCvec(:,i_ROI)-[ones(n_subject,1),age_term]*b;
-    end
-    %writematrix(FC_regressed, 'D:\BSC and MDD\data\XY_FC_age_adjusted.csv');
 
+% Polynomial expansion: linear, quadratic, cubic terms of age
+age_term = [age, age.^2, age.^3];
+
+if UseEmpiricalRegCoef == 0
+    % ---------- Data-driven regression ----------
+    fprintf("Using data-driven parameters...\n")
+    % Select only healthy controls (HC) to estimate regression coefficients
+    selectedRows = strcmp(diag, 'HC');
+    % selectedRows = diag==0; % alternative if diag is coded numerically
+    
+    % For each FC edge, fit GLM with age terms and regress out age effects
+    for i_ROI = 1:(n_ROI*(n_ROI-1)/2)
+        glmstruct = fitglm(age_term(selectedRows,:), FCvec(selectedRows,i_ROI));
+        b = glmstruct.Coefficients.Estimate; % regression coefficients
+        FC_regressed(:,i_ROI) = FCvec(:,i_ROI) - [ones(n_subject,1), age_term]*b;
+    end
+    % Optionally: save adjusted FC
+    % writematrix(FC_regressed, 'D:\BSC and MDD\data\XY_FC_age_adjusted.csv');
+    
 else
+    % ---------- Empirical regression ----------
     fprintf("Using empirical parameters...\n")
-    FC_regressed(age>=45,:) = FCvec(age>=45,:) - [ones(sum(age>=45),1),age_term(age>=45,:)]*b_UKB;
-    FC_regressed(age<45,:) = FCvec(age<45,:) - [ones(sum(age<45),1),age_term(age<45,:)]*b_HCP;
+    % Apply empirical regression coefficients separately for older (>=45) and younger (<45) subjects
+    FC_regressed(age >= 45,:) = FCvec(age >= 45,:) - [ones(sum(age >= 45),1), age_term(age >= 45,:)]*b_UKB;
+    FC_regressed(age < 45,:)  = FCvec(age < 45,:)  - [ones(sum(age < 45),1), age_term(age < 45,:)]*b_HCP;
 end
 
-% compute BSC
+%% Compute BSC
+% Add bias term (column of ones) and normalize FC values
 network_FC_data = [ones(n_subject,1) FC_regressed/12];
-clfscore = network_FC_data(:,strcmp(Network_index, networkname))*SVMbeta(strcmp(Network_index, networkname));
+
+% Compute classifier score using network-specific SVM coefficients
+clfscore = network_FC_data(:,strcmp(Network_index, networkname)) * ...
+           SVMbeta(strcmp(Network_index, networkname));
+
+% Apply normal cumulative distribution function (probit transform) 
+% to convert classifier score to probability-like BSC score
 BSC = normcdf(clfscore);
+
+end
