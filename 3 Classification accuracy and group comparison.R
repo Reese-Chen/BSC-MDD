@@ -1,4 +1,4 @@
-#### Classification accuracy and comparision between MDD and HC####
+#### Classification accuracy and group comparision####
 # written by Yinhan Chen and supervised by Qiang Luo
 # Email: yinhanchen23@m.fudan.edu.cn
 # released on 23 Sep 2025
@@ -781,6 +781,7 @@ p_PKU = ggplot(BSC_long, aes(x = Network, y = remission, fill = Mean)) +
     "BSC_Visual_0w" = "BSC Visual"
   ))
 ggsave("Heatmap of split BSC in PKU remission and nonremission.png", p_PKU, width = 10, height = 3, dpi = 300)
+
 
 
 
