@@ -27,7 +27,7 @@ Evaluation of the relationship between BSC scores and symptom severity, as measu
 The ZIB-MDD data are available by application to the ZIB data management committee after evaluation according to an established procedure (https://zib.fudan.edu.cn/). The PKU data are available upon request to the project PI Prof. Tianmei Si.
 
 ## Contact
-'''
+```
 Qiang Luo, PhD, Visiting Fellow at the Clare Hall, Cambridge
 Associate Principal Investigator
 Institute of Science and Technology for Brain-Inspired Intelligence (ISTBI)
@@ -36,10 +36,10 @@ Email: mrqiangluo@gmail.com;      qluo@fudan.edu.cn
 Office Phone: 86-21-65648454
 https://sites.google.com/site/qluochina/
 http://homepage.fudan.edu.cn/qiangluo/
-'''
+```
 
 ## Team Members:
-'''
+```
 Yinhan Chen, BSc, yinhanchen23@m.fudan.edu.cn
 Linlin Zhu, Ph.D., zhulinlin@bjmu.edu.cn
 Yi Zhang, Ph.D., yz669@cam.ac.uk
@@ -48,7 +48,7 @@ Christelle Langley, Ph.D., cl798@medschl.cam.ac.uk
 Barbara J. Sahakian, Ph.D., bjs1001@cam.ac.uk
 Xiang Wang, Ph.D., wang0916xia@gmail.com
 Tianmei Si, Ph.D., si.tian-mei@163.com
-'''
+```
 
 The current version was relesed on 23 Sep 2025.
 
