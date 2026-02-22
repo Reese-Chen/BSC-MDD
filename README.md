@@ -1,7 +1,7 @@
 # BSC-MDD
-Key words: Major Depressive Disorder; Diagnosis and Classification; Sleep Disorders; Gender Differences.
+Key words: Major Depressive Disorder; Diagnosis and Classification; Gender Differences.
 
-Collection of data sources and scripts for "Brain Sex Continuum Shifts in Major Depression and Their Connection to Sleep Dysregulation"
+Collection of data sources and scripts for "Shifts in the Brain Sex Continuum in Major Depressive Disorder: Evidence for a Persistent Neurobiological Marker"
 
 ## Scripts
 
@@ -46,10 +46,11 @@ Yi Zhang, Ph.D., yz669@cam.ac.uk
 Jitao Li, Ph.D., ljt_102124@163.com
 Christelle Langley, Ph.D., cl798@medschl.cam.ac.uk
 Barbara J. Sahakian, Ph.D., bjs1001@cam.ac.uk
+Jianfeng Feng, Ph.D., jffeng@fudan.edu.cn
 Xiang Wang, Ph.D., wang0916xia@gmail.com
 Tianmei Si, Ph.D., si.tian-mei@163.com
 ```
 
-The current version was relesed on 23 Sep 2025.
+The current version was relesed on 22 Feb 2026.
 
-Citation of this package: Chen et al. Brain Sex Continuum Shifts in Major Depression and Their Connection to Sleep Dysregulation Biological Psychiatry.
+Citation of this package: Chen et al. Shifts in the Brain Sex Continuum in Major Depressive Disorder: Evidence for a Persistent Neurobiological Marker.
