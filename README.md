@@ -8,7 +8,7 @@ Collection of data sources and scripts for "Shifts in the Brain Sex Continuum in
 Scripts were developed using R and Matlab.
 
 ### Step 1: Multi-site Harmonization
-Harmonization of individual rsFCs in the PKU and XY cohort with reference to the UKBiobank dataset using ComBat function in “sva” package in R. (1 Multi-site harmonization.R)
+Harmonization of individual rsFCs in the PKU and XYH cohort with reference to the UKBiobank dataset using ComBat function in “sva” package in R. (1 Multi-site harmonization.R)
 
 ### Step 2: BSC Calculation
 Computing the Brain Sex Continuum (BSC) score and split BSC scores within and between 6 networks. (2_BSC_calculation.m)
@@ -24,7 +24,7 @@ Evaluation of the relationship between BSC scores and symptom severity, as measu
 
 ## Data sources
 
-The ZIB-MDD data are available by application to the ZIB data management committee after evaluation according to an established procedure (https://zib.fudan.edu.cn/). The PKU data are available upon request to the project PI Prof. Tianmei Si.
+The XYH data is part of the ZIB-MDD data, which are available by application to the ZIB data management committee after evaluation according to an established procedure (https://zib.fudan.edu.cn/). The PKU data are available upon request to the project PI Prof. Tianmei Si.
 
 ## Contact
 ```
