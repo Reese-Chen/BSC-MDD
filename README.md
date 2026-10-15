@@ -1,7 +1,7 @@
 # BSC-MDD
 Key words: Major Depressive Disorder; Diagnosis and Classification; Gender Differences.
 
-Collection of data sources and scripts for "Shifts in the Brain Sex Continuum in Major Depressive Disorder: Evidence for a Persistent Neurobiological Marker"
+Collection of data sources and scripts for Chen, Y. et al. Shifts in the brain sex continuum in major depressive disorder: Evidence for a persistent neurobiological marker. Journal of Affective Disorders 412, 122150 (2026).
 
 ## Scripts
 
@@ -53,4 +53,4 @@ Tianmei Si, Ph.D., si.tian-mei@163.com
 
 The current version was relesed on 22 Feb 2026.
 
-Citation of this package: Chen et al. Shifts in the Brain Sex Continuum in Major Depressive Disorder: Evidence for a Persistent Neurobiological Marker.
+Citation of this package: Chen, Y. et al. Shifts in the brain sex continuum in major depressive disorder: Evidence for a persistent neurobiological marker. Journal of Affective Disorders 412, 122150 (2026).
